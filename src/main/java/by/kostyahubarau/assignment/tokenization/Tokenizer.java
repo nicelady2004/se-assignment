@@ -1,6 +1,8 @@
 package by.kostyahubarau.assignment.tokenization;
 
-import by.kostyahubarau.assignment.exception.TokenizerException;
+import by.kostyahubarau.assignment.exception.InputPositionedException;
+import by.kostyahubarau.assignment.tokenization.model.Token;
+import by.kostyahubarau.assignment.tokenization.model.TokenType;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
@@ -22,7 +24,7 @@ public class Tokenizer {
     }
 
     public List<Token> tokenize() {
-        return !StringUtils.isAllBlank(input) ? tokenizeNonBlankInput() : Collections.<Token>emptyList();
+        return !StringUtils.isAllBlank(input) ? tokenizeNonBlankInput() : Collections.emptyList();
     }
 
     private List<Token> tokenizeNonBlankInput() {
@@ -49,43 +51,22 @@ public class Tokenizer {
         if (matcher.lookingAt()) {
             String match = matcher.group();
             currentCharacterIndex += match.length();
-            return new NumberToken(Double.valueOf(match));
+            return new Token(TokenType.NUM, Double.valueOf(match));
         } else {
-            throw new TokenizerException("Malformed token starting at position", currentCharacterIndex, currentCharacterIndex + 1, input);
+            throw new InputPositionedException("Malformed token starting at position", currentCharacterIndex, currentCharacterIndex + 1, input);
         }
     }
 
     private Token consumeOperator() {
-        TokenType tokenType;
+        TokenType tokenType = TokenType.fromCharacterRepresentation(input.charAt(currentCharacterIndex));
 
-        switch (input.charAt(currentCharacterIndex)) {
-            case '+':
-                tokenType = TokenType.PLUS;
-                break;
-            case '-':
-                tokenType = TokenType.MINUS;
-                break;
-            case '*':
-                tokenType = TokenType.MUL;
-                break;
-            case '/':
-                tokenType = TokenType.DIV;
-                break;
-            case '^':
-                tokenType = TokenType.POW;
-                break;
-            case '(':
-                tokenType = TokenType.LPAREN;
-                break;
-            case ')':
-                tokenType = TokenType.RPAREN;
-                break;
-            default:
-                throw new TokenizerException("Malformed token at position", currentCharacterIndex, currentCharacterIndex + 1, input);
+        if (tokenType == null) {
+            throw new InputPositionedException("Malformed token at position", currentCharacterIndex, currentCharacterIndex + 1, input);
         }
+
         currentCharacterIndex++;
 
-        return new Token(tokenType);
+        return new Token(tokenType, null);
     }
 
     private void consumeWhitespaces() {

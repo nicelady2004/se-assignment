@@ -1,12 +1,12 @@
 package by.kostyahubarau.assignment.exception;
 
-public class TokenizerException extends RuntimeException {
+public class InputPositionedException extends RuntimeException {
 
     private final String input;
     private final int startOffset;
     private final int endOffset;
 
-    public TokenizerException(String message, int startOffset, int endOffset, String input) {
+    public InputPositionedException(String message, int startOffset, int endOffset, String input) {
         super(message);
         this.startOffset = startOffset;
         this.endOffset = endOffset;
