@@ -29,7 +29,7 @@ public class TokenizerTest {
 
     @Test(expected = InputPositionedException.class)
     public void mustThrowExceptionForInvalidNumber() {
-        new Tokenizer("5.").tokenize();
+        new Tokenizer("1.1.").tokenize();
     }
 
 }

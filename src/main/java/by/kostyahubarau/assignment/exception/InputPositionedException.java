@@ -13,4 +13,16 @@ public class InputPositionedException extends RuntimeException {
         this.input = input;
     }
 
+    public String getInput() {
+        return input;
+    }
+
+    public int getStartOffset() {
+        return startOffset;
+    }
+
+    public int getEndOffset() {
+        return endOffset;
+    }
+
 }

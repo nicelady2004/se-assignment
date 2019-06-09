@@ -51,7 +51,7 @@ public class Tokenizer {
         if (matcher.lookingAt()) {
             String match = matcher.group();
             currentCharacterIndex += match.length();
-            return new Token(TokenType.NUM, Double.valueOf(match));
+            return new Token(TokenType.NUM, Double.valueOf(match), currentCharacterIndex - match.length(), currentCharacterIndex);
         } else {
             throw new InputPositionedException("Malformed token starting at position", currentCharacterIndex, currentCharacterIndex + 1, input);
         }
@@ -66,7 +66,7 @@ public class Tokenizer {
 
         currentCharacterIndex++;
 
-        return new Token(tokenType, null);
+        return new Token(tokenType, null, currentCharacterIndex - 1, currentCharacterIndex);
     }
 
     private void consumeWhitespaces() {

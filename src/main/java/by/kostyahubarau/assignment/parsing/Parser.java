@@ -104,7 +104,10 @@ public class Parser {
     }
 
     private void fail(String reason) {
-        throw new InputPositionedException(reason, tokenToConsume().getStartOffset(), tokenToConsume().getEndOffset(), input);
+        Token tokenToConsume = tokenToConsume();
+        int startOffset = tokenToConsume != null ? tokenToConsume.getStartOffset() : input.length();
+        int endOffset = tokenToConsume != null ? tokenToConsume.getEndOffset() : startOffset + 1;
+        throw new InputPositionedException(reason, startOffset, endOffset, input);
     }
 
 }
